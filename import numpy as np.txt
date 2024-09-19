@@ -1,0 +1,55 @@
+import numpy as np
+from scipy.signal  import lfilter
+import matplotlib.pyplot as plt 
+
+def identify(heart_rate_data):
+    ans=[[]]
+    temp=[]
+    c=0
+    for i in range(0,1440):
+        if(c>=20):
+            ans.append(temp)
+        if heart_rate_data[i]>0.3:
+            temp.append(heart_rate_data[i])
+            c=c+1
+        else:
+            temp=[]
+            c=0
+    print(ans) 
+        
+def avg(heart_rate_data):
+    avg=[]
+    
+    k=0;
+    for i in range(0,24):
+        sum=0
+        for j in range(0,60):
+            sum=sum+heart_rate_data[k]
+            k=k+1
+            
+        avg.append(sum/60)
+    return avg
+        
+       
+
+heart_rate_data = np.random.rand(1440)
+
+a=0.1
+x=0.9
+# smooth_heart_rate=lfilter(heart_rate_data)
+# average=avg(a,x,heart_rate_data)
+print('heart_rate_data = ',heart_rate_data)
+print('Hourly Average = ',average)
+np.savetxt('data.txt',average)
+data=np.loadtxt('data.txt')
+print('loaded data = ',data)
+# higher=[[]]
+identify(heart_rate_data)
+# print("higher = ",higher)
+plt.plot(heart_rate_data)
+# plt.plot(average)
+
+plt.show()
+
+
+
